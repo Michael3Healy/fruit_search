@@ -85,32 +85,26 @@ const fruit = [
 
 // Creates array of fruits containing string input by user
 function search(str) {
-	let results = [];
-	str = str.toLowerCase();
 	if (str === '') return;
-
-	for (let food of fruit) {
-		lowerCasedFood = food.toLowerCase();
-		if (lowerCasedFood.includes(str)) {
-			results.push(food);
-		}
-	}
-	return results;
+	return fruit.filter((food) => food.toLowerCase().includes(str.toLowerCase()));
 }
 
 // Passes input value from user into search() and showSuggestions()
-function searchHandler() {
-	results = search(input.value);
-	showSuggestions(results, input.value);
+function searchHandler(e) {
+	const inputVal = e.target.value;
+	const results = search(inputVal);
+	showSuggestions(results, inputVal);
 }
 
 // Adds fruit containing input string to dropdown list, uses regular expression matching to bold the text within fruit that matches the input
 function showSuggestions(results, inputVal) {
 	suggestions.innerHTML = '';
-	for (let suggestion of results) {
-		const match = suggestion.match(new RegExp(inputVal, 'i'))
-		suggestion = suggestion.replace(match[0], `<b>${match[0]}</b>`)
-		suggestions.innerHTML += `<li>${suggestion}</li>`
+	if (results) {
+		for (let suggestion of results) {
+			const match = suggestion.match(new RegExp(inputVal, 'i'));
+			suggestion = suggestion.replace(match[0], `<strong>${match[0]}</strong>`);
+			suggestions.innerHTML += `<li>${suggestion}</li>`;
+		}
 	}
 }
 
